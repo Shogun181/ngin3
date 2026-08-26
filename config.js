@@ -1,15 +1,8 @@
 const WEDDING_DATA = {
-  brideName: "Evelyn Sterling",
-  groomName: "Arthur Montgomery",
-  date: "October 24, 2026",
-  time: "4:00 PM",
-  venue: "The St. Regis Grand Ballroom",
-  location: "London, UK",
-  firstDateYear: "2022",
-  firstDatePlace: "Kensington Gardens",
-  firstDateStory: "Under the golden canopy of Kensington Gardens...",
-  
-  // Image paths uploaded to your GitHub repo
-  heroPhoto: "couple.jpg",
-  firstDatePhoto: "first-date.jpg"
+  brideName: "Nang Ngin Zat Noum",
+  groomName: "Sai Mao Sint",
+  date: "11- 11- 2026",
+  venue: "ရှမ်းစာပေနှင့်ယှဥ်ကျေးမှူခမ်းမ",
+  location: "Lashio , ရှမ်းစာပေနှင့်ယှဥ်ကျေးမှူခမ်းမ",
+  firstDateStory: "She got drunk and then smash my head and then take her to me "
 };
