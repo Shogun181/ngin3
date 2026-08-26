@@ -1,0 +1,22 @@
+backend:
+  name: github
+  repo: Shogun78541/Ngin1
+  branch: main
+
+media_folder: "assets/images" # Where uploaded local photos are saved in your repo
+public_folder: "/assets/images"
+
+collections:
+  - name: "settings"
+    label: "Wedding Details"
+    files:
+      - file: "data/wedding.json"
+        label: "Configuration"
+        name: "wedding_config"
+        fields:
+          - { label: "Bride Name", name: "brideName", widget: "string" }
+          - { label: "Groom Name", name: "groomName", widget: "string" }
+          - { label: "Wedding Date", name: "date", widget: "string" }
+          - { label: "Venue", name: "venue", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
+          - { label: "Cover Photo", name: "heroImage", widget: "image" }
