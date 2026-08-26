@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard — Wedding Story</title>
+  <title>Wedding Invitation</title>
+  <script src="config.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -21,108 +22,86 @@
       align-items: center;
       min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
-    .card {
+    .container {
       background: var(--bg-parchment);
       border: 2px solid var(--gold);
-      padding: 40px;
-      width: 90%;
-      max-width: 450px;
+      padding: 40px 20px;
+      max-width: 600px;
+      width: 100%;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       text-align: center;
       box-sizing: border-box;
     }
-    h2 {
+    h1 {
       font-family: 'Cinzel', serif;
       color: var(--burgundy);
-      margin-bottom: 20px;
+      font-size: 2.2rem;
+      margin-bottom: 5px;
     }
-    input {
-      width: 100%;
-      padding: 12px;
+    .amp {
+      color: var(--gold);
+      font-size: 1.8rem;
       margin: 10px 0;
-      border: 1px solid var(--gold);
-      background: #fff;
-      font-size: 1rem;
-      box-sizing: border-box;
     }
-    button {
-      width: 100%;
-      padding: 12px;
-      background: var(--gold);
-      color: #fff;
-      border: none;
+    .details-box {
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      padding: 15px 0;
+      margin: 25px 0;
+    }
+    .detail-item {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 8px 0;
+    }
+    .story-section {
+      text-align: justify;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+    .story-title {
       font-family: 'Cinzel', serif;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-top: 15px;
-    }
-    button:hover {
-      background: var(--burgundy);
-    }
-    .error {
       color: var(--burgundy);
-      margin-top: 10px;
-      display: none;
-    }
-    #dashboard {
-      display: none;
+      font-size: 1.3rem;
+      text-align: center;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. LOGIN FORM -->
-  <div class="card" id="loginCard">
-    <h2>Admin Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">ENTER DASHBOARD</button>
-    <p class="error" id="errorMsg">Invalid credentials!</p>
-  </div>
+  <div class="container">
+    <h1 id="brideName"></h1>
+    <div class="amp">&amp;</div>
+    <h1 id="groomName"></h1>
 
-  <!-- 2. PROTECTED ADMIN DASHBOARD -->
-  <div class="card" id="dashboard">
-    <h2>Welcome, Shogun</h2>
-    <p>You are logged into your wedding dashboard.</p>
-    <hr style="border-color: var(--gold); margin: 20px 0;">
-    
-    <p style="font-size: 0.95rem; text-align: left;">To edit your live website details (Names, Dates, Venue), edit your <b>index.html</b> file directly on GitHub.</p>
-    
-    <button onclick="logout()" style="background: var(--burgundy);">LOGOUT</button>
+    <div class="details-box">
+      <div class="detail-item" id="weddingDate"></div>
+      <div class="detail-item" id="weddingTime"></div>
+      <div class="detail-item" id="weddingVenue"></div>
+      <div class="detail-item" id="weddingLocation"></div>
+    </div>
+
+    <div class="story-section">
+      <div class="story-title">Our Story</div>
+      <p id="firstDateStory"></p>
+    </div>
   </div>
 
   <script>
-    // Hardcoded credentials
-    const AUTH_USER = "shogun";
-    const AUTH_PASS = "182002";
-
-    // Auto-login check on page load
-    if (sessionStorage.getItem("isLoggedIn") === "true") {
-      showDashboard();
-    }
-
-    function login() {
-      const u = document.getElementById("username").value;
-      const p = document.getElementById("password").value;
-
-      if (u === AUTH_USER && p === AUTH_PASS) {
-        sessionStorage.setItem("isLoggedIn", "true");
-        showDashboard();
-      } else {
-        document.getElementById("errorMsg").style.display = "block";
-      }
-    }
-
-    function showDashboard() {
-      document.getElementById("loginCard").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-    }
-
-    function logout() {
-      sessionStorage.removeItem("isLoggedIn");
-      window.location.reload();
-    }
+    // Load variables from config.js automatically
+    document.getElementById("brideName").textContent = WEDDING_DATA.brideName;
+    document.getElementById("groomName").textContent = WEDDING_DATA.groomName;
+    document.getElementById("weddingDate").textContent = "Date: " + WEDDING_DATA.date;
+    document.getElementById("weddingTime").textContent = "Time: " + WEDDING_DATA.time;
+    document.getElementById("weddingVenue").textContent = "Venue: " + WEDDING_DATA.venue;
+    document.getElementById("weddingLocation").textContent = "Location: " + WEDDING_DATA.location;
+    document.getElementById("firstDateStory").textContent = WEDDING_DATA.firstDateStory;
   </script>
+
 </body>
 </html>
