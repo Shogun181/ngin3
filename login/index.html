@@ -109,22 +109,25 @@
     <hr style="border-color: var(--gold); margin: 15px 0;">
     
     <label>Bride Name</label>
-    <input type="text" id="brideName" value="Evelyn Sterling">
+    <input type="text" id="brideName" value="Nang Ngin Zat Noum">
     
     <label>Groom Name</label>
-    <input type="text" id="groomName" value="Arthur Montgomery">
+    <input type="text" id="groomName" value="Sai Mao Sint">
     
     <label>Wedding Date</label>
-    <input type="text" id="date" value="October 24, 2026">
+    <input type="text" id="date" value="11-11-2026">
+
+    <label>Wedding Time</label>
+    <input type="text" id="time" value="9:00 AM">
     
     <label>Venue Name</label>
-    <input type="text" id="venue" value="The St. Regis Grand Ballroom">
+    <input type="text" id="venue" value="ရှမ်းစာပေနှင့်ယဉ်ကျေးမှုခမ်းမ">
     
     <label>Location</label>
-    <input type="text" id="location" value="London, United Kingdom">
+    <input type="text" id="location" value="Lashio , ရှမ်းစာပေနှင့်ယဉ်ကျေးမှုခမ်းမ">
 
     <label>First Date Story</label>
-    <textarea id="story" rows="3">Under the golden canopy of Kensington Gardens...</textarea>
+    <textarea id="story" rows="3">She got drunk and then smash my head and then take her to me</textarea>
 
     <button onclick="generateConfig()">GENERATE CONFIG CODE</button>
 
@@ -166,6 +169,7 @@
         `  brideName: "${document.getElementById('brideName').value}",\n` +
         `  groomName: "${document.getElementById('groomName').value}",\n` +
         `  date: "${document.getElementById('date').value}",\n` +
+        `  time: "${document.getElementById('time').value}",\n` +
         `  venue: "${document.getElementById('venue').value}",\n` +
         `  location: "${document.getElementById('location').value}",\n` +
         `  firstDateStory: "${document.getElementById('story').value.replace(/"/g, '\\"')}"\n` +
