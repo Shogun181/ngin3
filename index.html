@@ -3,954 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Timeless Love Story & Wedding Invitation</title>
-  
-  <!-- Google Fonts: Early 1900s Aesthetics -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Pinyon+Script&display=swap" rel="stylesheet">
-
-  <!-- Three.js, GSAP & ScrollTrigger CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
+  <title>Admin Dashboard — Wedding Story</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* ==========================================================================
-       1. GLOBAL & PARCHMENT STYLING (1900s Edwardian/Victorian Palette)
-       ========================================================================== */
     :root {
       --bg-parchment: #f4eee1;
-      --bg-dark-parchment: #e8ded0;
       --text-espresso: #2b1e1a;
-      --text-gold: #c5a059;
-      --gold-border: #d4af37;
+      --gold: #c5a059;
       --burgundy: #6b1d2f;
-      --accent-muted: #5a6b5c;
-      --font-headline: 'Cinzel Decorative', Georgia, serif;
-      --font-serif: 'Cormorant Garamond', serif;
-      --font-sub: 'Cinzel', serif;
-      --font-calligraphy: 'Pinyon Script', cursive;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
+    body {
       background-color: #0c0a09;
       color: var(--text-espresso);
-      font-family: var(--font-serif);
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
-
-    /* Antique Vignette Overlay */
-    .vignette-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 100;
-      box-shadow: inset 0 0 100px rgba(20, 10, 5, 0.45);
-    }
-
-    /* Background Parchment Canvas/Texture */
-    .parchment-bg {
-      background-color: var(--bg-parchment);
-      background-image: 
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, rgba(220,205,185,0.6) 100%),
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.015) 2px, rgba(0, 0, 0, 0.015) 4px);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-dark-parchment);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--text-gold);
-      border-radius: 4px;
-    }
-
-    /* ==========================================================================
-       2. CINEMATIC 3D GATE CANVAS & ENTRANCE
-       ========================================================================== */
-    #canvas-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 50;
-      transition: opacity 1.5s ease;
-    }
-
-    .entrance-ui {
-      position: fixed;
-      bottom: 12%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 60;
-      text-align: center;
-      color: #f4eee1;
-      pointer-events: auto;
-      transition: opacity 0.8s ease;
-    }
-
-    .btn-enter {
-      background: transparent;
-      border: 1px solid var(--text-gold);
-      color: #f4eee1;
-      font-family: var(--font-sub);
-      font-size: 1.1rem;
-      letter-spacing: 4px;
-      padding: 16px 36px;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.5s ease;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
-    }
-
-    .btn-enter:hover {
-      background: rgba(197, 160, 89, 0.2);
-      box-shadow: 0 0 25px rgba(197, 160, 89, 0.5);
-      border-color: #fff;
-    }
-
-    .tap-hint {
-      display: block;
-      margin-top: 12px;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      opacity: 0.7;
-      font-family: var(--font-serif);
-    }
-
-    /* Transition Flash Overlay */
-    #transition-flash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #f4eee1;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 70;
-    }
-
-    /* ==========================================================================
-       3. NAVIGATION & AUDIO CONTROLS
-       ========================================================================== */
-    .story-nav {
-      position: fixed;
-      top: 30px;
-      right: 40px;
-      z-index: 40;
+      font-family: 'Cormorant Garamond', serif;
       display: flex;
-      gap: 20px;
+      justify-content: center;
       align-items: center;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-
-    .music-btn {
-      background: none;
-      border: 1px solid var(--text-gold);
-      color: var(--text-espresso);
-      font-family: var(--font-sub);
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .music-btn:hover {
-      background: var(--text-gold);
-      color: #fff;
-    }
-
-    /* ==========================================================================
-       4. STORYBOOK & INVITATION CONTENT
-       ========================================================================== */
-    #main-content {
-      position: relative;
-      z-index: 10;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 1.5s ease;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* Section Styling */
-    .story-section {
       min-height: 100vh;
-      padding: 100px 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      margin: 0;
     }
-
-    /* Decorative Antique Card Box */
-    .antique-card {
+    .card {
       background: var(--bg-parchment);
-      border: 1px solid var(--text-gold);
-      padding: 60px 40px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-      position: relative;
-      width: 100%;
+      border: 2px solid var(--gold);
+      padding: 40px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
       text-align: center;
+      box-sizing: border-box;
     }
-
-    .antique-card::before {
-      content: '';
-      position: absolute;
-      top: 8px; left: 8px; right: 8px; bottom: 8px;
-      border: 1px dashed var(--text-gold);
-      pointer-events: none;
-    }
-
-    /* Corner Ornaments */
-    .corner-ornament {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      border-color: var(--text-gold);
-      border-style: solid;
-    }
-    .top-left { top: 15px; left: 15px; border-width: 2px 0 0 2px; }
-    .top-right { top: 15px; right: 15px; border-width: 2px 2px 0 0; }
-    .bottom-left { bottom: 15px; left: 15px; border-width: 0 0 2px 2px; }
-    .bottom-right { bottom: 15px; right: 15px; border-width: 0 2px 2px 0; }
-
-    /* Typography Settings */
-    .sub-heading {
-      font-family: var(--font-sub);
-      font-size: 0.9rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
+    h2 {
+      font-family: 'Cinzel', serif;
       color: var(--burgundy);
-      margin-bottom: 15px;
-    }
-
-    .main-title {
-      font-family: var(--font-headline);
-      font-size: 2.2rem;
-      color: var(--text-espresso);
       margin-bottom: 20px;
-      line-height: 1.3;
     }
-
-    .names-display {
-      font-family: var(--font-calligraphy);
-      font-size: 4rem;
-      color: var(--text-espresso);
-      margin: 20px 0;
-      line-height: 1;
-    }
-
-    .story-text {
-      font-size: 1.25rem;
-      line-height: 1.8;
-      color: #4a3b32;
-      max-width: 650px;
-      margin: 0 auto 30px auto;
-      font-style: italic;
-    }
-
-    /* Custom Vintage Image Frame */
-    .vintage-frame {
-      position: relative;
-      padding: 15px;
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid var(--gold);
       background: #fff;
-      border: 1px solid #d0c4b4;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-      display: inline-block;
-      margin: 25px 0;
-      max-width: 100%;
+      font-size: 1rem;
+      box-sizing: border-box;
     }
-
-    .vintage-frame img {
+    button {
       width: 100%;
-      max-width: 550px;
-      height: auto;
-      display: block;
-      filter: sepia(0.2) contrast(0.95);
-    }
-
-    .vintage-frame::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      box-shadow: inset 0 0 20px rgba(60, 40, 20, 0.2);
-      pointer-events: none;
-    }
-
-    /* Event Details Grid */
-    .event-details {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 30px;
-      border-top: 1px solid rgba(197, 160, 89, 0.3);
-      padding-top: 30px;
-      flex-wrap: wrap;
-    }
-
-    .detail-item {
-      text-align: center;
-    }
-
-    .detail-label {
-      font-family: var(--font-sub);
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      color: var(--burgundy);
-    }
-
-    .detail-val {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-top: 5px;
-    }
-
-    /* Gallery Grid */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      width: 100%;
-      margin-top: 40px;
-    }
-
-    .gallery-item {
-      cursor: pointer;
-      transition: transform 0.4s ease;
-    }
-
-    .gallery-item:hover {
-      transform: scale(1.03) rotate(1deg);
-    }
-
-    /* Lightbox */
-    .lightbox {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(15, 10, 5, 0.9);
-      z-index: 200;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .lightbox img {
-      max-width: 85%;
-      max-height: 80vh;
-      border: 10px solid var(--bg-parchment);
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 30px; right: 40px;
+      padding: 12px;
+      background: var(--gold);
       color: #fff;
-      font-size: 2rem;
+      border: none;
+      font-family: 'Cinzel', serif;
       cursor: pointer;
-      font-family: var(--font-sub);
+      font-size: 1rem;
+      margin-top: 15px;
     }
-
-    /* Wax Seal Replica */
-    .wax-seal {
-      width: 70px;
-      height: 70px;
+    button:hover {
       background: var(--burgundy);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-gold);
-      font-family: var(--font-headline);
-      font-size: 1.4rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      margin: 30px auto 0 auto;
-      border: 2px dashed rgba(255,255,255,0.2);
     }
-
-    /* Responsive Tweaks */
-    @media (max-width: 768px) {
-      .main-title { font-size: 1.6rem; }
-      .names-display { font-size: 2.8rem; }
-      .antique-card { padding: 40px 20px; }
-      .event-details { gap: 20px; }
+    .error {
+      color: var(--burgundy);
+      margin-top: 10px;
+      display: none;
+    }
+    #dashboard {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Antique Vignette Frame -->
-  <div class="vignette-overlay"></div>
-
-  <!-- Smooth Light Transition Element -->
-  <div id="transition-flash"></div>
-
-  <!-- Audio Control Element -->
-  <div class="story-nav" id="storyNav">
-    <button class="music-btn" id="musicToggle" onclick="toggleAudio()">♪ MUSIC</button>
-  </div>
-  <audio id="bgAudio" loop preload="auto">
-    <!-- Replace source with preferred romance theme file -->
-    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=cinematic-documentary-115669.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- 3D Entrance Canvas -->
-  <div id="canvas-container"></div>
-
-  <!-- Interactive Entrance Overlay UI -->
-  <div class="entrance-ui" id="entranceUI">
-    <button class="btn-enter" onclick="startEntranceSequence()">Enter Our Story</button>
-    <span class="tap-hint">[ TAP TO BEGIN ]</span>
+  <!-- 1. LOGIN FORM -->
+  <div class="card" id="loginCard">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">ENTER DASHBOARD</button>
+    <p class="error" id="errorMsg">Invalid credentials!</p>
   </div>
 
-  <!-- Main Storybook Content (Parchment Themed) -->
-  <main id="main-content" class="parchment-bg">
-
-    <!-- 1. INVITATION SECTION -->
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <div class="corner-ornament top-left"></div>
-          <div class="corner-ornament top-right"></div>
-          <div class="corner-ornament bottom-left"></div>
-          <div class="corner-ornament bottom-right"></div>
-
-          <p class="sub-heading">Together with their families</p>
-          <h1 class="names-display" id="brideGroomNames">[BRIDE] & [GROOM]</h1>
-          <p class="story-text">request the honour of your presence at the celebration of their marriage</p>
-          
-          <div class="event-details">
-            <div class="detail-item">
-              <p class="detail-label">DATE</p>
-              <p class="detail-val" id="weddingDate">[WEDDING DATE]</p>
-            </div>
-            <div class="detail-item">
-              <p class="detail-label">TIME</p>
-              <p class="detail-val" id="weddingTime">[WEDDING TIME]</p>
-            </div>
-            <div class="detail-item">
-              <p class="detail-label">VENUE</p>
-              <p class="detail-val" id="weddingVenue">[VENUE NAME]</p>
-            </div>
-            <div class="detail-item">
-              <p class="detail-label">LOCATION</p>
-              <p class="detail-val" id="weddingLocation">[LOCATION]</p>
-            </div>
-          </div>
-
-          <div class="wax-seal">M</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. FIRST DATE -->
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <p class="sub-heading">Chapter I</p>
-          <h2 class="main-title">Where Our Story Began</h2>
-          <p class="story-text" id="firstDateStory">"A single moment, a chance encounter, and the quiet realization that everything was about to change."</p>
-
-          <div class="vintage-frame">
-            <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1000&q=80" alt="First Date" id="imgFirstDate">
-          </div>
-
-          <div class="event-details">
-            <div class="detail-item">
-              <p class="detail-label">DATE</p>
-              <p class="detail-val" id="firstDateYear">[FIRST DATE YEAR]</p>
-            </div>
-            <div class="detail-item">
-              <p class="detail-label">PLACE</p>
-              <p class="detail-val" id="firstDatePlace">[FIRST DATE LOCATION]</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. ANNIVERSARY CHAPTERS -->
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <p class="sub-heading">Chapter II</p>
-          <h2 class="main-title">One Year Together</h2>
-          <p class="story-text">"365 days of learning each other's laughter, quiet mornings, and shared dreams."</p>
-          <div class="vintage-frame">
-            <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1000&q=80" alt="First Anniversary">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <p class="sub-heading">Chapter III</p>
-          <h2 class="main-title">Two Years Together</h2>
-          <p class="story-text">"Building a world of our own, side-by-side through every season."</p>
-          <div class="vintage-frame">
-            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80" alt="Second Anniversary">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <p class="sub-heading">Chapter IV</p>
-          <h2 class="main-title">Three Years Together</h2>
-          <p class="story-text">"Deepening roots, boundless adventures, and a love growing stronger with time."</p>
-          <div class="vintage-frame">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80" alt="Third Anniversary">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <p class="sub-heading">Chapter V</p>
-          <h2 class="main-title">Four Years Together</h2>
-          <p class="story-text">"The quiet promise spoken without words: that our tomorrows belong together."</p>
-          <div class="vintage-frame">
-            <img src="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1000&q=80" alt="Fourth Anniversary">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. GALLERY -->
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal">
-          <p class="sub-heading">Memories</p>
-          <h2 class="main-title">The Keepsake Album</h2>
-          
-          <div class="gallery-grid">
-            <div class="vintage-frame gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-              <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=600&q=80" alt="Memory 1">
-            </div>
-            <div class="vintage-frame gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-              <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" alt="Memory 2">
-            </div>
-            <div class="vintage-frame gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Memory 3">
-            </div>
-            <div class="vintage-frame gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Memory 4">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. FINAL CLIMAX CHAPTER -->
-    <section class="story-section">
-      <div class="container">
-        <div class="antique-card gsap-reveal" style="border-width: 2px; border-color: var(--burgundy);">
-          <p class="sub-heading">The Climax</p>
-          <h2 class="main-title" style="color: var(--burgundy);">And Then, We Became Forever</h2>
-          
-          <div class="vintage-frame">
-            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80" alt="Wedding Day Climax" id="imgClimax">
-          </div>
-
-          <p class="story-text" style="margin-top: 25px; font-size: 1.4rem;">
-            "After all the moments, all the memories, and all the years...<br>
-            our next chapter begins."
-          </p>
-
-          <h1 class="names-display" style="font-size: 3rem; margin-top: 10px;">Forever Starts Here</h1>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Lightbox Element -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close">&times;</span>
-    <img id="lightboxImg" src="" alt="Enlarged View">
+  <!-- 2. PROTECTED ADMIN DASHBOARD -->
+  <div class="card" id="dashboard">
+    <h2>Welcome, Shogun</h2>
+    <p>You are logged into your wedding dashboard.</p>
+    <hr style="border-color: var(--gold); margin: 20px 0;">
+    
+    <p style="font-size: 0.95rem; text-align: left;">To edit your live website details (Names, Dates, Venue), edit your <b>index.html</b> file directly on GitHub.</p>
+    
+    <button onclick="logout()" style="background: var(--burgundy);">LOGOUT</button>
   </div>
 
-  <!-- ==========================================================================
-     5. TECHNICAL IMPLEMENTATION (THREE.JS 3D ENGINE & GSAP LOGIC)
-     ========================================================================== -->
   <script>
-    /* ------------------------------------------------------------------------
-       A. DATA CONFIGURATION (Easy update point for assets & parameters)
-       ------------------------------------------------------------------------ */
-    const WEDDING_CONFIG = {
-      brideName: "Evelyn Sterling",
-      groomName: "Arthur Montgomery",
-      date: "October 24, 2026",
-      time: "Four O'Clock in the Afternoon",
-      venue: "The St. Regis Grand Ballroom",
-      location: "London, United Kingdom",
-      firstDateYear: "Autumn 2022",
-      firstDatePlace: "Kensington Gardens",
-      firstDateStory: "Under the golden canopy of Kensington Gardens, a conversation began that neither of us ever wanted to end.",
-      // Custom 3D Gate Asset Override (if providing external GLTF/OBJ later):
-      customGateModelPath: null 
-    };
+    // Hardcoded credentials
+    const AUTH_USER = "shogun";
+    const AUTH_PASS = "182002";
 
-    // Inject Configuration Data Into UI
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("brideGroomNames").innerText = `${WEDDING_CONFIG.brideName} & ${WEDDING_CONFIG.groomName}`;
-      document.getElementById("weddingDate").innerText = WEDDING_CONFIG.date;
-      document.getElementById("weddingTime").innerText = WEDDING_CONFIG.time;
-      document.getElementById("weddingVenue").innerText = WEDDING_CONFIG.venue;
-      document.getElementById("weddingLocation").innerText = WEDDING_CONFIG.location;
-      document.getElementById("firstDateYear").innerText = WEDDING_CONFIG.firstDateYear;
-      document.getElementById("firstDatePlace").innerText = WEDDING_CONFIG.firstDatePlace;
-      document.getElementById("firstDateStory").innerText = `"${WEDDING_CONFIG.firstDateStory}"`;
-    });
-
-    /* ------------------------------------------------------------------------
-       B. THREE.JS REALTIME 3D GATE ENVIRONMENT SETUP
-       ------------------------------------------------------------------------ */
-    let scene, camera, renderer, leftGateDoor, rightGateDoor, dustParticles;
-    let isTransitioning = false;
-
-    function init3DScene() {
-      const container = document.getElementById('canvas-container');
-      
-      // Scene
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0c0a09);
-      scene.fog = new THREE.FogExp2(0x1a1410, 0.035);
-
-      // Camera
-      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 1.6, 12); // Eye-level view in front of gate
-
-      // Renderer
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      container.appendChild(renderer.domElement);
-
-      // Lighting
-      const ambientLight = new THREE.AmbientLight(0xffebd7, 0.6);
-      scene.add(ambientLight);
-
-      // Sunlight coming through the gate from behind
-      const sunLight = new THREE.DirectionalLight(0xffd59e, 1.8);
-      sunLight.position.set(0, 8, -10);
-      sunLight.castShadow = true;
-      sunLight.shadow.mapSize.width = 2048;
-      sunLight.shadow.mapSize.height = 2048;
-      scene.add(sunLight);
-
-      // Warm spot fill
-      const frontSpot = new THREE.SpotLight(0xc5a059, 0.8);
-      frontSpot.position.set(0, 5, 8);
-      scene.add(frontSpot);
-
-      // Procedural Architectural Pillars & Monumental Entrance
-      createGateArchitecture();
-
-      // Atmospheric Dust Particle System
-      createAtmosphericDust();
-
-      // Window Resize Listener
-      window.addEventListener('resize', onWindowResize);
-
-      // Render Loop
-      animate();
+    // Auto-login check on page load
+    if (sessionStorage.getItem("isLoggedIn") === "true") {
+      showDashboard();
     }
 
-    /* Procedural Construction of Monumental 1900s Victorian Gate */
-    function createGateArchitecture() {
-      const gateGroup = new THREE.Group();
+    function login() {
+      const u = document.getElementById("username").value;
+      const p = document.getElementById("password").value;
 
-      // Stone & Metal Materials
-      const stoneMaterial = new THREE.MeshStandardMaterial({
-        color: 0x2c2621,
-        roughness: 0.8,
-        metalness: 0.1
-      });
-      const ironMaterial = new THREE.MeshStandardMaterial({
-        color: 0x111111,
-        roughness: 0.4,
-        metalness: 0.8
-      });
-      const goldAccentMaterial = new THREE.MeshStandardMaterial({
-        color: 0xc5a059,
-        roughness: 0.3,
-        metalness: 0.9
-      });
-
-      // Classical Stone Columns (Left & Right)
-      const columnGeo = new THREE.CylinderGeometry(0.5, 0.6, 7, 16);
-      const leftColumn = new THREE.Mesh(columnGeo, stoneMaterial);
-      leftColumn.position.set(-2.8, 3.5, 0);
-      leftColumn.castShadow = true;
-      leftColumn.receiveShadow = true;
-
-      const rightColumn = leftColumn.clone();
-      rightColumn.position.set(2.8, 3.5, 0);
-
-      // Architrave Top Block
-      const ArchGeo = new THREE.BoxGeometry(7, 0.8, 1.2);
-      const architrave = new THREE.Mesh(ArchGeo, stoneMaterial);
-      architrave.position.set(0, 7.2, 0);
-      architrave.castShadow = true;
-
-      gateGroup.add(leftColumn, rightColumn, architrave);
-
-      // Gate Pivot Groups for Realistic Door Opening Animation
-      const leftPivot = new THREE.Group();
-      leftPivot.position.set(-2.2, 0, 0);
-
-      const rightPivot = new THREE.Group();
-      rightPivot.position.set(2.2, 0, 0);
-
-      // Door Frames (Ironwork)
-      const doorGeo = new THREE.BoxGeometry(2.1, 6, 0.1);
-      
-      const leftDoorMesh = new THREE.Mesh(doorGeo, ironMaterial);
-      leftDoorMesh.position.set(1.05, 3, 0); // Offset so pivot sits at hinge edge
-      leftDoorMesh.castShadow = true;
-      leftPivot.add(leftDoorMesh);
-
-      const rightDoorMesh = new THREE.Mesh(doorGeo, ironMaterial);
-      rightDoorMesh.position.set(-1.05, 3, 0);
-      rightDoorMesh.castShadow = true;
-      rightPivot.add(rightDoorMesh);
-
-      // Decorative Gold Crests on Doors
-      const crestGeo = new THREE.TorusGeometry(0.4, 0.05, 8, 24);
-      const leftCrest = new THREE.Mesh(crestGeo, goldAccentMaterial);
-      leftCrest.position.set(1.05, 3, 0.08);
-      leftPivot.add(leftCrest);
-
-      const rightCrest = leftCrest.clone();
-      rightCrest.position.set(-1.05, 3, 0.08);
-      rightPivot.add(rightCrest);
-
-      // Cobblestone Pathway
-      const pathGeo = new THREE.PlaneGeometry(10, 30);
-      const pathMat = new THREE.MeshStandardMaterial({ color: 0x181411, roughness: 0.9 });
-      const pathway = new THREE.Mesh(pathGeo, pathMat);
-      pathway.rotation.x = -Math.PI / 2;
-      pathway.position.set(0, 0, 5);
-      pathway.receiveShadow = true;
-      gateGroup.add(pathway);
-
-      scene.add(gateGroup);
-
-      // Assign global references for animation
-      leftGateDoor = leftPivot;
-      rightGateDoor = rightPivot;
-      scene.add(leftGateDoor);
-      scene.add(rightGateDoor);
-    }
-
-    /* Atmospheric Dust Particles (Cinematic Floating Effect) */
-    function createAtmosphericDust() {
-      const particleCount = 400;
-      const geometry = new THREE.BufferGeometry();
-      const positions = new Float32Array(particleCount * 3);
-
-      for (let i = 0; i < particleCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 15;
-        positions[i + 1] = Math.random() * 8;
-        positions[i + 2] = (Math.random() - 0.5) * 20;
-      }
-
-      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-      const material = new THREE.PointsMaterial({
-        color: 0xffd59e,
-        size: 0.04,
-        transparent: true,
-        opacity: 0.6,
-        blending: THREE.AdditiveBlending
-      });
-
-      dustParticles = new THREE.Points(geometry, material);
-      scene.add(dustParticles);
-    }
-
-    /* Engine Animation Loop */
-    function animate() {
-      requestAnimationFrame(animate);
-
-      // Slow particle float
-      if (dustParticles) {
-        const positions = dustParticles.geometry.attributes.position.array;
-        for (let i = 1; i < positions.length; i += 3) {
-          positions[i] -= 0.002;
-          if (positions[i] < 0) positions[i] = 8;
-        }
-        dustParticles.geometry.attributes.position.needsUpdate = true;
-      }
-
-      // Idle Camera Breathing Effect when waiting at gate
-      if (!isTransitioning) {
-        camera.position.y = 1.6 + Math.sin(Date.now() * 0.001) * 0.05;
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    /* ------------------------------------------------------------------------
-       C. CINEMATIC INTERACTION & TRANSITION LOGIC
-       ------------------------------------------------------------------------ */
-    function startEntranceSequence() {
-      if (isTransitioning) return;
-      isTransitioning = true;
-
-      // 1. Hide Entrance UI Controls
-      gsap.to("#entranceUI", { opacity: 0, duration: 0.8, pointerEvents: "none" });
-
-      // 2. Animate 3D Gate Opening & Camera Zoom
-      const timeline = gsap.timeline({
-        onComplete: revealInvitationPage
-      });
-
-      // Rotate Gate Doors Physically Open
-      timeline.to(leftGateDoor.rotation, {
-        y: -Math.PI * 0.55,
-        duration: 3.5,
-        ease: "power2.inOut"
-      }, 0);
-
-      timeline.to(rightGateDoor.rotation, {
-        y: Math.PI * 0.55,
-        duration: 3.5,
-        ease: "power2.inOut"
-      }, 0);
-
-      // Move Camera Through Gate Opening
-      timeline.to(camera.position, {
-        z: -1.5,
-        y: 1.8,
-        duration: 4,
-        ease: "power2.inOut"
-      }, 0.2);
-
-      // 3. Cinematic White/Warm Light Flash Transition
-      timeline.to("#transition-flash", {
-        opacity: 1,
-        duration: 1.2,
-        ease: "power1.in"
-      }, 2.8);
-    }
-
-    /* Reveal Invitation Page & Initialize Scroll Triggers */
-    function revealInvitationPage() {
-      // Hide Canvas Scene, Show Storybook DOM
-      document.getElementById("canvas-container").style.display = "none";
-      const mainContent = document.getElementById("main-content");
-      mainContent.style.visibility = "visible";
-      mainContent.style.opacity = "1";
-      
-      document.getElementById("storyNav").style.opacity = "1";
-
-      // Fade out transition flash
-      gsap.to("#transition-flash", { opacity: 0, duration: 1.5 });
-
-      // Enable standard page scrolling
-      document.body.style.overflowY = "auto";
-
-      // Initialize Scroll Animations
-      initScrollAnimations();
-    }
-
-    /* ------------------------------------------------------------------------
-       D. GSAP SCROLLTRIGGER STORYBOOK REVEALS
-       ------------------------------------------------------------------------ */
-    function initScrollAnimations() {
-      gsap.registerPlugin(ScrollTrigger);
-
-      // Animate each antique story card gently on scroll
-      const reveals = document.querySelectorAll(".gsap-reveal");
-      reveals.forEach((element) => {
-        gsap.fromTo(element, 
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 80%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
-      });
-    }
-
-    /* ------------------------------------------------------------------------
-       E. AUDIO & LIGHTBOX UTILITIES
-       ------------------------------------------------------------------------ */
-    function toggleAudio() {
-      const audio = document.getElementById("bgAudio");
-      const btn = document.getElementById("musicToggle");
-      if (audio.paused) {
-        audio.play();
-        btn.innerText = "♪ PAUSE";
+      if (u === AUTH_USER && p === AUTH_PASS) {
+        sessionStorage.setItem("isLoggedIn", "true");
+        showDashboard();
       } else {
-        audio.pause();
-        btn.innerText = "♪ MUSIC";
+        document.getElementById("errorMsg").style.display = "block";
       }
     }
 
-    function openLightbox(src) {
-      document.getElementById("lightboxImg").src = src;
-      document.getElementById("lightbox").style.display = "flex";
+    function showDashboard() {
+      document.getElementById("loginCard").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
     }
 
-    function closeLightbox() {
-      document.getElementById("lightbox").style.display = "none";
+    function logout() {
+      sessionStorage.removeItem("isLoggedIn");
+      window.location.reload();
     }
-
-    // Initialize 3D Scene on Window Load
-    window.onload = () => {
-      document.body.style.overflowY = "hidden"; // Lock scroll during gate view
-      init3DScene();
-    };
   </script>
 </body>
 </html>
