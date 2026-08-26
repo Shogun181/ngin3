@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Wedding Story</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-parchment: #f4eee1;
+      --text-espresso: #2b1e1a;
+      --gold: #c5a059;
+      --burgundy: #6b1d2f;
+    }
+    body {
+      background-color: #0c0a09;
+      color: var(--text-espresso);
+      font-family: 'Cormorant Garamond', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: var(--bg-parchment);
+      border: 2px solid var(--gold);
+      padding: 40px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-align: center;
+      box-sizing: border-box;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--burgundy);
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid var(--gold);
+      background: #fff;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: var(--burgundy);
+    }
+    .error {
+      color: var(--burgundy);
+      margin-top: 10px;
+      display: none;
+    }
+    #dashboard {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN FORM -->
+  <div class="card" id="loginCard">
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">ENTER DASHBOARD</button>
+    <p class="error" id="errorMsg">Invalid credentials!</p>
+  </div>
+
+  <!-- PROTECTED DASHBOARD -->
+  <div class="card" id="dashboard">
+    <h2>Welcome, Shogun</h2>
+    <p>You are logged into your wedding dashboard.</p>
+    <hr style="border-color: var(--gold); margin: 20px 0;">
+    
+    <p style="font-size: 0.95rem; text-align: left;">To edit your live website details (Names, Dates, Venue), edit your <b>index.html</b> or <b>config.js</b> file directly on GitHub.</p>
+    
+    <button onclick="logout()" style="background: var(--burgundy);">LOGOUT</button>
+  </div>
+
+  <script>
+    const AUTH_USER = "shogun";
+    const AUTH_PASS = "182002";
+
+    if (sessionStorage.getItem("isLoggedIn") === "true") {
+      showDashboard();
+    }
+
+    function login() {
+      const u = document.getElementById("username").value;
+      const p = document.getElementById("password").value;
+
+      if (u === AUTH_USER && p === AUTH_PASS) {
+        sessionStorage.setItem("isLoggedIn", "true");
+        showDashboard();
+      } else {
+        document.getElementById("errorMsg").style.display = "block";
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById("loginCard").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+    }
+
+    function logout() {
+      sessionStorage.removeItem("isLoggedIn");
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
