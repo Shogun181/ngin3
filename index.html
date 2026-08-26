@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wedding Invitation</title>
+  <title>Wedding Story</title>
   <script src="config.js"></script>
+  <!-- Three.js Library for 3D Intro Animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -17,90 +19,245 @@
       background-color: #0c0a09;
       color: var(--text-espresso);
       font-family: 'Cormorant Garamond', serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      overflow-x: hidden;
     }
+
+    /* 3D Canvas Background Container */
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Main Content Layout */
+    .content-wrapper {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
     .container {
-      background: var(--bg-parchment);
+      background: rgba(244, 238, 225, 0.93);
       border: 2px solid var(--gold);
       padding: 40px 20px;
-      max-width: 600px;
+      max-width: 650px;
       width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
       text-align: center;
       box-sizing: border-box;
+      backdrop-filter: blur(5px);
     }
+
     h1 {
       font-family: 'Cinzel', serif;
       color: var(--burgundy);
       font-size: 2.2rem;
       margin-bottom: 5px;
     }
+
     .amp {
       color: var(--gold);
       font-size: 1.8rem;
       margin: 10px 0;
     }
+
+    /* Photo Containers */
+    .hero-photo {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
     .details-box {
       border-top: 1px solid var(--gold);
       border-bottom: 1px solid var(--gold);
       padding: 15px 0;
       margin: 25px 0;
     }
+
     .detail-item {
       font-size: 1.2rem;
       font-weight: 600;
       margin: 8px 0;
     }
+
+    .map-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: var(--gold);
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      border-radius: 3px;
+    }
+
     .story-section {
       text-align: justify;
       font-size: 1.1rem;
       line-height: 1.6;
-      margin-top: 20px;
+      margin-top: 25px;
       padding: 0 10px;
     }
-    .story-title {
+
+    .section-title {
       font-family: 'Cinzel', serif;
       color: var(--burgundy);
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       text-align: center;
-      margin-bottom: 10px;
+      margin: 30px 0 15px 0;
+    }
+
+    /* Anniversary Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+    }
+
+    .gallery-caption {
+      font-size: 0.85rem;
+      margin-top: 4px;
+      color: var(--text-espresso);
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1 id="brideName"></h1>
-    <div class="amp">&amp;</div>
-    <h1 id="groomName"></h1>
+  <!-- 3D Canvas Background -->
+  <div id="canvas-container"></div>
 
-    <div class="details-box">
-      <div class="detail-item" id="weddingDate"></div>
-      <div class="detail-item" id="weddingTime"></div>
-      <div class="detail-item" id="weddingVenue"></div>
-      <div class="detail-item" id="weddingLocation"></div>
-    </div>
+  <!-- Page Content -->
+  <div class="content-wrapper">
+    <div class="container">
+      
+      <!-- Wedding Hero Photo -->
+      <img id="weddingPhoto" class="hero-photo" src="" alt="Wedding Photo" style="display:none;">
 
-    <div class="story-section">
-      <div class="story-title">Our Story</div>
-      <p id="firstDateStory"></p>
+      <h1 id="brideName"></h1>
+      <div class="amp">&amp;</div>
+      <h1 id="groomName"></h1>
+
+      <div class="details-box">
+        <div class="detail-item" id="weddingDate"></div>
+        <div class="detail-item" id="weddingTime"></div>
+        <div class="detail-item" id="weddingVenue"></div>
+        <div class="detail-item" id="weddingLocation"></div>
+        <a id="mapLink" class="map-btn" target="_blank" style="display:none;">GET DIRECTIONS</a>
+      </div>
+
+      <div class="story-section">
+        <div class="section-title">Our Story</div>
+        <p id="firstDateStory"></p>
+      </div>
+
+      <!-- Anniversary Gallery -->
+      <div class="section-title">Anniversary &amp; Memories</div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Dynamic gallery images load here -->
+      </div>
+
     </div>
   </div>
 
   <script>
+    // 1. DYNAMIC DATA INTEGRATION FROM CONFIG.JS
     document.getElementById("brideName").textContent = WEDDING_DATA.brideName;
     document.getElementById("groomName").textContent = WEDDING_DATA.groomName;
     document.getElementById("weddingDate").textContent = "Date: " + WEDDING_DATA.date;
-    document.getElementById("weddingTime").textContent = "Time: " + WEDDING_DATA.time;
+    document.getElementById("weddingTime").textContent = "Time: " + (WEDDING_DATA.time || "TBA");
     document.getElementById("weddingVenue").textContent = "Venue: " + WEDDING_DATA.venue;
     document.getElementById("weddingLocation").textContent = "Location: " + WEDDING_DATA.location;
     document.getElementById("firstDateStory").textContent = WEDDING_DATA.firstDateStory;
-  </script>
 
+    if (WEDDING_DATA.weddingPhoto) {
+      const img = document.getElementById("weddingPhoto");
+      img.src = WEDDING_DATA.weddingPhoto;
+      img.style.display = "block";
+    }
+
+    if (WEDDING_DATA.mapUrl) {
+      const mapBtn = document.getElementById("mapLink");
+      mapBtn.href = WEDDING_DATA.mapUrl;
+      mapBtn.style.display = "inline-block";
+    }
+
+    // Populate Anniversary Gallery
+    const galleryContainer = document.getElementById("galleryGrid");
+    if (WEDDING_DATA.anniversaryPhotos && WEDDING_DATA.anniversaryPhotos.length > 0) {
+      WEDDING_DATA.anniversaryPhotos.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "gallery-item";
+        div.innerHTML = `<img src="${item.url}" alt="${item.caption || 'Memory'}"><div class="gallery-caption">${item.caption || ''}</div>`;
+        galleryContainer.appendChild(div);
+      });
+    } else {
+      galleryContainer.innerHTML = "<p style='grid-column: 1/-1; font-style: italic;'>No anniversary photos uploaded yet.</p>";
+    }
+
+    // 2. THREE.JS 3D PARTICLE / INTRO ANIMATION
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const particlesCount = 300;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 15;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({
+      size: 0.04,
+      color: 0xc5a059,
+      transparent: true,
+      opacity: 0.8
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      particles.rotation.y += 0.0015;
+      particles.rotation.x += 0.0008;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
 </body>
 </html>
