@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: Shogun78541/Ngin1
+  repo: Shogun181/ngin3
   branch: main
 
 media_folder: "assets/images" # Where uploaded local photos are saved in your repo
